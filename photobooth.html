@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Take Photos - Photo Box</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Take Your Photo!</h1>
+
+    <!-- Pilih jumlah foto -->
+    <label for="photo-count">Choose number of photos:</label>
+    <select id="photo-count">
+      <option value="3">3 Photos</option>
+      <option value="4">4 Photos</option>
+    </select>
+
+    <!-- Pilihan Filter -->
+    <div class="options">
+      <h3>Choose Filter:</h3>
+      <button onclick="setFilter('fresh')">Fresh</button>
+      <button onclick="setFilter('vintage')">Vintage</button>
+      <button onclick="setFilter('bw')">B&W</button>
+      <button onclick="setFilter('warm')">Warm</button>
+      <button onclick="setFilter('dreamy')">Dreamy</button>
+      <button onclick="setFilter('aesthetic')">Aesthetic</button>
+    </div>
+
+    <!-- Tombol Mirror & Otomatis -->
+    <div class="options">
+      <h3>⇩</h3>
+      <button id="start-sequence">Mulai Foto Otomatis</button>
+      <button onclick="toggleMirror()">Mirror</button>
+    </div>
+
+    <!-- Video preview -->
+    <div style="position: relative;">
+      <video id="video" autoplay playsinline></video>
+
+      <!-- Countdown -->
+      <div id="countdown" style="
+        font-size: 60px;
+        font-weight: bold;
+        color: white;
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 10;
+        display: none;
+        text-shadow: 2px 2px 8px rgb(168, 112, 112);
+      "></div>
+    </div>
+
+    <div id="flash" style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: white;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1000;
+      transition: opacity 0.2s ease-out;
+    "></div>
+
+
+    <!-- Tombol ambil foto -->
+    <button class="camera-btn" onclick="takePhoto()">📷</button>
+
+    <!-- Preview hasil sementara -->
+    <div id="photo-preview"></div>
+
+    <!-- Tombol lanjut -->
+    <a href="result.html" class="start-button">Next</a>
+
+    <!-- Info -->
+    <p id="info" style="color: rgb(128, 0, 94); font-weight: bold; margin-top: 10px;"></p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

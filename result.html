@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Photo Result - Photo Box</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #fef6f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      color: hotpink;
+    }
+
+    .decoration-options {
+      margin: 15px 0;
+    }
+
+    .photo-layout {
+      min-height: 300px;
+      border: 2px dashed #ccc;
+      margin: 20px 0;
+      padding: 10px;
+      position: relative;
+      background-color: white;
+    }
+
+    .photo-strip-vertical {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 10.5cm;
+      height: 29.7cm;
+      margin: auto;
+      background-color: white;
+      padding: 10px;
+      position: relative;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .photo-strip-vertical img {
+      width: 9cm;
+      height: auto;
+      margin: 10px 0;
+      border-radius: 8px;
+      z-index: 1;
+    }
+
+    .decoration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      z-index: 2;
+    }
+
+    button, input[type="color"], select {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: hotpink;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover, select:hover {
+      background-color: deeppink;
+    }
+
+    select {
+      background-color: white;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Your Photo Result!</h1>
+
+    <div class="decoration-options">
+      <label for="bg-color">Background Color:</label>
+      <input type="color" id="bg-color" value="#ffffff" onchange="setBackground(this.value)" />
+
+      <br/><br/>
+      <label for="frame-select">Add Frame:</label>
+      <select id="frame-select" onchange="addFrame(this.value)">
+        <option value="">-- Select Frame --</option>
+        <option value="All Too Well">All Too Well (4)</option>
+        <option value="Cutie">Cutie Things (3)</option>
+        <option value="Comic">Comic (3)</option>
+        <option value="Mutiara">Mutiara (4)</option>
+        <option value="White Coquette">White Coquette (4)</option>
+        <option value="Cutie Pink">Cutie Pink (4)</option>
+        <option value="Selfie Time">Selfie Time! (3)</option>
+        <option value="About You">About You (3)</option>
+        <option value="Piano B&W">Piano B&W (3)</option>
+        <option value="Cigarettes After Sex">Cigarettes After Sex (3)</option>
+        <option value="Olivia Rodrigo">Olivia Rodrigo (3)</option>
+        <option value="NewJeans">NewJeans (3)</option>
+        <option value="Enhypen">Enhypen (4)</option>
+        <option value="Treasure">Treasure (4)</option>
+        <option value="Treasure Jikjin">Treasure Jikjin (3)</option>
+      </select>
+
+      <button onclick="removeDecoration()">Remove Decoration</button>
+    </div>
+
+    <div id="photo-layout" class="photo-layout photo-strip-vertical" style="margin-top: 40px;">
+      <div class="decoration" id="decoration-layer"></div>
+      <!-- Foto hasil nya nanti nongol di sini -->
+    </div>
+
+    <button onclick="downloadResult()">Download Result</button>
+    <button onclick="goBackToCamera()">Back to Camera</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    const photoLayout = document.getElementById('photo-layout');
+    const decorationLayer = document.getElementById('decoration-layer');
+
+    window.onload = () => {
+      const photos = JSON.parse(localStorage.getItem('photos') || '[]');
+      const decoration = document.getElementById('decoration-layer');
+      photos.forEach(src => {
+        const img = document.createElement('img');
+        img.src = src;
+        photoLayout.insertBefore(img, decoration);
+      });
+    };
+
+    function setBackground(color) {
+      photoLayout.style.backgroundColor = color;
+    }
+
+    function addFrame(type) {
+      let url = '';
+      if (type === 'All Too Well') {
+        url = 'img/alltoowell.png';
+      } else if (type === 'Cutie') {
+        url = 'img/cutie.png';
+      } else if (type === 'Comic') {
+        url = 'img/comic.png';
+      } else if (type === 'Mutiara') {
+        url = 'img/mutiara.png';
+      } else if (type === 'White Coquette') {
+        url = 'img/putihpita.png';
+      } else if (type === 'Cutie Pink') {
+        url = 'img/cutiepink.png';
+      } else if (type === 'About You') {
+        url = 'img/aboutyou.png';
+      } else if (type === 'Piano B&W') {
+        url = 'img/piano.png';
+      } else if (type === 'NewJeans') {
+        url = 'img/newjeans.png';
+      } else if (type === 'Cigarettes After Sex') {
+        url = 'img/cas.png';
+      } else if (type === 'Olivia Rodrigo') {
+        url = 'img/olivia.png';
+      } else if (type === 'Enhypen') {
+        url = 'img/enhypen.png';
+      } else if (type === 'Treasure') {
+        url = 'img/treasure.png';
+      } else if (type === 'Selfie Time') {
+        url = 'img/selfietime.png';
+      } else if (type === 'Treasure Jikjin') {
+        url = 'img/jikjin.png';
+      }
+
+      if (url !== '') {
+        decorationLayer.style.backgroundImage = `url('${url}')`;
+        decorationLayer.style.backgroundSize = 'cover';
+        decorationLayer.style.zIndex = 2;
+      } else {
+        decorationLayer.style.backgroundImage = 'none';
+      }
+    }
+
+    function removeDecoration() {
+      decorationLayer.style.backgroundImage = 'none';
+    }
+
+    function downloadResult() {
+      html2canvas(photoLayout).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'photobooth_result.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    }
+
+    function goBackToCamera() {
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
